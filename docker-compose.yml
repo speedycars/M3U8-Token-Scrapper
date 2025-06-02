@@ -1,0 +1,6 @@
+services:
+  m3u8-token-scrapper:
+    image: "speedycars/m3u8-token-scrapper:latest"
+    build:
+      context: .
+      dockerfile: ./Dockerfile
