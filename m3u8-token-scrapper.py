@@ -12,8 +12,6 @@ config.read(config_path, encoding='utf-8')
 
 m3ufilepath = ast.literal_eval(config.get('CONFIG', 'm3ufilepath'))
 threadfin_server = ast.literal_eval(config.get('CONFIG', 'threadfin_server'))
-plexpublichostname = ast.literal_eval(config.get('CONFIG', 'plexpublichostname'))
-plextoken = str(config.get('CONFIG', 'plextoken'))
 bnt1_link = str(config.get('CONFIG', 'bnt1_link'))
 dwnews_link = str(config.get('CONFIG', 'dwnews_link'))
 aljazeera_link = str(config.get('CONFIG', 'aljazeera_link'))
@@ -389,5 +387,3 @@ if 'true' in str(r.content):
 r = requests.post(threadfin_server+'/api/', headers={'Content-type': 'application/json'}, json={"cmd": "update.xepg"})
 if 'true' in str(r.content):
     print('Threadfin updated its XEPG.')
-r = requests.post(plexpublichostname+'/livetv/dvrs/38/reloadGuide?X-Plex-Token='+plextoken)
-print('Plex got signaled to update its EPG.')
