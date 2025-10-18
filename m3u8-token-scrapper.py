@@ -99,9 +99,9 @@ for source in sources:
     driver.delete_all_cookies()
     driver.get(source)
     driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-    time.sleep(2)
+    time.sleep(5)
     if "btvplus" in source:
-        element = driver.find_element("xpath", "//*[@id='preroll-button-wrapper']")
+        element = driver.find_element("xpath", '//*[@id="preroll-player-wrapper"]/div[2]/div/button[1]')
         element.click()
         time.sleep(2)
 
