@@ -256,7 +256,7 @@ radiofresh = '''#EXTINF:-1 tvg-id="Radio Fresh" tvg-name="Радио Fresh" tvg-
 
 
 for elem in url_list:
-    if ("btv.bg" in elem and "low" not in elem):
+    if "manifest" in elem:
         btv = btv+elem+'''
 '''
     elif "ntv_2" in elem:
