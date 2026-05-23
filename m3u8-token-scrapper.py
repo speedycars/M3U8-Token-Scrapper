@@ -12,15 +12,10 @@ config.read(config_path, encoding='utf-8')
 
 m3ufilepath = ast.literal_eval(config.get('CONFIG', 'm3ufilepath'))
 threadfin_server = ast.literal_eval(config.get('CONFIG', 'threadfin_server'))
-bnt1_link = str(config.get('CONFIG', 'bnt1_link'))
 dwnews_link = str(config.get('CONFIG', 'dwnews_link'))
 aljazeera_link = str(config.get('CONFIG', 'aljazeera_link'))
 agrotv_link = str(config.get('CONFIG', 'agrotv_link'))
 tv1_link = str(config.get('CONFIG', 'tv1_link'))
-bnt2_link = str(config.get('CONFIG', 'bnt2_link'))
-bnt3_link = str(config.get('CONFIG', 'bnt3_link'))
-bnt4_link = str(config.get('CONFIG', 'bnt4_link'))
-sto_auto_moto_link = str(config.get('CONFIG', 'sto_auto_moto_link'))
 traveltv_link = str(config.get('CONFIG', 'traveltv_link'))
 thisisbg_link = str(config.get('CONFIG', 'thisisbg_link'))
 thevoice_link = str(config.get('CONFIG', 'thevoice_link'))
@@ -69,7 +64,12 @@ options.add_argument('--enable-unsafe-swiftshader')
 
 
 sources = [
-    "https://btvplus.bg/live/",
+    "https://tv.bnt.bg/",
+    "https://tv.bnt.bg/bnt2",
+    "https://tv.bnt.bg/bnt3",
+    "https://tv.bnt.bg/bnt4",
+    # "https://btvplus.bg/live/",
+    "https://iptv-bg.com/btv/",
     "https://nova.bg/live",
     "https://nova.bg/live/news",
     "https://euronews.bg/euronews-na-zhivo/",
@@ -100,13 +100,15 @@ for source in sources:
     driver.get(source)
     driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
     time.sleep(5)
-    if "btvplus" in source:
-        element = driver.find_element("xpath", '//*[@id="preroll-player-wrapper"]/div[2]/div/button[1]')
-        element.click()
-        time.sleep(2)
+    if "" in driver.requests:
+        time.sleep(10)
+    # if "btvplus" in source:
+    #     element = driver.find_element("xpath", '//*[@id="preroll-player-wrapper"]/div[2]/div/button[1]')
+    #     element.click()
+    #     time.sleep(2)
 
     for request in driver.requests:
-        if "m3u8" in request.url:
+        if "m3u8" in request.url and "lb-ts" not in request.url:
             print(request.url)
             url_list.append(request.url)
             break
@@ -116,9 +118,14 @@ driver.quit()
 extm3u = '''#EXTM3U x-tvg-url="https://www.open-epg.com/files/bulgaria1.xml"
 '''
 bnt1 = '''#EXTINF:-1 tvg-id="БНТ1.bg" tvg-name="БНТ 1 HD" tvg-logo="http://logos.epg.cloudns.org/bnt1.png",БНТ 1 HD
-'''+bnt1_link+'''
+#EXTVLCOPT:http-referrer=https://i.cdn.bg/
+#EXTVLCOPT:http-referer=https://i.cdn.bg/
+#EXTVLCOPT:http-user-agent=Mozilla/5.0
 '''
 btv = '''#EXTINF:-1 tvg-id="bTV.bg" tvg-name="bTV HD" tvg-logo="http://logos.epg.cloudns.org/btv.png",bTV HD
+#EXTVLCOPT:http-referrer=https://iptv-bg.com/
+#EXTVLCOPT:http-referer=https://iptv-bg.com/
+#EXTVLCOPT:http-user-agent=Mozilla/5.0
 '''
 nova = '''#EXTINF:-1 tvg-id="Нова телевизия.bg" tvg-name="Nova HD" tvg-logo="http://logos.epg.cloudns.org/nova.png",Nova HD
 '''
@@ -131,32 +138,74 @@ bgonair = '''#EXTINF:-1 tvg-id="България он еър.bg" tvg-name="Bulga
 bloomberg = '''#EXTINF:-1 tvg-id="Bloomberg TV Bulgaria.bg" tvg-name="Bloomberg TV Bulgaria" tvg-logo="http://logos.epg.cloudns.org/bloomberg.png",Bloomberg TV Bulgaria
 '''
 btvcomedy = '''#EXTINF:-1 tvg-id="bTV Comedy.bg" tvg-name="bTV Comedy" tvg-logo="http://epg.cloudns.org/tv/logos/btvcomedy.png",bTV Comedy
+#EXTVLCOPT:http-referrer=https://iptv-bg.com/
+#EXTVLCOPT:http-referer=https://iptv-bg.com/
+#EXTVLCOPT:http-user-agent=Mozilla/5.0
 '''
 btvaction = '''#EXTINF:-1 tvg-id="bTV Action.bg" tvg-name="bTV Action" tvg-logo="http://epg.cloudns.org/tv/logos/btvaction.png",bTV Action
+#EXTVLCOPT:http-referrer=https://iptv-bg.com/
+#EXTVLCOPT:http-referer=https://iptv-bg.com/
+#EXTVLCOPT:http-user-agent=Mozilla/5.0
 '''
 btvcinema = '''#EXTINF:-1 tvg-id="bTV Cinema.bg" tvg-name="bTV Cinema" tvg-logo="http://epg.cloudns.org/tv/logos/btvcinema.png",bTV Cinema
+#EXTVLCOPT:http-referrer=https://iptv-bg.com/
+#EXTVLCOPT:http-referer=https://iptv-bg.com/
+#EXTVLCOPT:http-user-agent=Mozilla/5.0
 '''
 starlife = '''#EXTINF:-1 tvg-id="StarLife.bg" tvg-name="Star Life" tvg-logo="http://epg.cloudns.org/tv/logos/starlife.png",Star Life
+#EXTVLCOPT:http-referrer=https://iptv-bg.com/
+#EXTVLCOPT:http-referer=https://iptv-bg.com/
+#EXTVLCOPT:http-user-agent=Mozilla/5.0
 '''
 starcrime = '''#EXTINF:-1 tvg-id="StarCrime.bg" tvg-name="Star Crime" tvg-logo="http://epg.cloudns.org/tv/logos/starcrime.png",Star Crime
+#EXTVLCOPT:http-referrer=https://iptv-bg.com/
+#EXTVLCOPT:http-referer=https://iptv-bg.com/
+#EXTVLCOPT:http-user-agent=Mozilla/5.0
 '''
 kinonova = '''#EXTINF:-1 tvg-id="KinoNova.bg" tvg-name="Kino Nova" tvg-logo="http://epg.cloudns.org/tv/logos/kinonova.png",Kino Nova
+#EXTVLCOPT:http-referrer=https://iptv-bg.com/
+#EXTVLCOPT:http-referer=https://iptv-bg.com/
+#EXTVLCOPT:http-user-agent=Mozilla/5.0
 '''
 axn = '''#EXTINF:-1 tvg-id="AXN.bg" tvg-name="AXN" tvg-logo="https://github.com/harrygg/EPG/blob/master/logos/axn.png?raw=true",AXN
+#EXTVLCOPT:http-referrer=https://iptv-bg.com/
+#EXTVLCOPT:http-referer=https://iptv-bg.com/
+#EXTVLCOPT:http-user-agent=Mozilla/5.0
 '''
 viasatexplorer = '''#EXTINF:-1 tvg-id="Viasat Explorer.bg" tvg-name="Viasat Explorer" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/c/c3/Viasat_Explore-logo.svg",Viasat Explorer
+#EXTVLCOPT:http-referrer=https://iptv-bg.com/
+#EXTVLCOPT:http-referer=https://iptv-bg.com/
+#EXTVLCOPT:http-user-agent=Mozilla/5.0
 '''
 tlc = '''#EXTINF:-1 tvg-id="TLC Balkans.bg" tvg-name="TLC" tvg-logo="https://github.com/harrygg/EPG/blob/master/logos/tlc.png?raw=true",TLC
+#EXTVLCOPT:http-referrer=https://iptv-bg.com/
+#EXTVLCOPT:http-referer=https://iptv-bg.com/
+#EXTVLCOPT:http-user-agent=Mozilla/5.0
 '''
 discovery = '''#EXTINF:-1 tvg-id="Discovery Channel.bg" tvg-name="Discovery Channel" tvg-logo="https://github.com/harrygg/EPG/blob/master/logos/discoveryit.png?raw=true",Discovery Channel
+#EXTVLCOPT:http-referrer=https://iptv-bg.com/
+#EXTVLCOPT:http-referer=https://iptv-bg.com/
+#EXTVLCOPT:http-user-agent=Mozilla/5.0
 '''
 natgeo = '''#EXTINF:-1 tvg-id="National Geographic Channel.bg" tvg-name="National Geographic" tvg-logo="http://epg.cloudns.org/tv/logos/natgeo.png",National Geographic
+#EXTVLCOPT:http-referrer=https://iptv-bg.com/
+#EXTVLCOPT:http-referer=https://iptv-bg.com/
+#EXTVLCOPT:http-user-agent=Mozilla/5.0
 '''
 natgeowild = '''#EXTINF:-1 tvg-id="Nat Geo Wild.bg" tvg-name="National Geographic Wild" tvg-logo="https://github.com/harrygg/EPG/blob/master/logos/natgeowildhd.png?raw=true",National Geographic Wild
+#EXTVLCOPT:http-referrer=https://iptv-bg.com/
+#EXTVLCOPT:http-referer=https://iptv-bg.com/
+#EXTVLCOPT:http-user-agent=Mozilla/5.0
 '''
 novasport = '''#EXTINF:-1 tvg-id="Нова Спорт.bg" tvg-name="Nova Sport" tvg-logo="https://github.com/harrygg/EPG/blob/master/logos/novasport.png?raw=true",Nova Sport
+#EXTVLCOPT:http-referrer=https://iptv-bg.com/
+#EXTVLCOPT:http-referer=https://iptv-bg.com/
+#EXTVLCOPT:http-user-agent=Mozilla/5.0
 '''
 ringbg = '''#EXTINF:-1 tvg-id="RING.BG.bg" tvg-name="RING.BG" tvg-logo="https://github.com/harrygg/EPG/blob/master/logos/ringbg.png?raw=true",RING.BG
+#EXTVLCOPT:http-referrer=https://iptv-bg.com/
+#EXTVLCOPT:http-referer=https://iptv-bg.com/
+#EXTVLCOPT:http-user-agent=Mozilla/5.0
 '''
 dwnews = '''#EXTINF:-1 tvg-id="DW.bg" tvg-name="DW News" tvg-logo="https://yt3.googleusercontent.com/NSOdTQTWlqMy8O_j32dx-ftfTCHMOt04Hm7KZ4pfAK6-eQzQSZMWvvss90kG8KQfJ7iNP3phyA=s900-c-k-c0x00ffffff-no-rj",DW News
 '''+dwnews_link+'''
@@ -171,16 +220,19 @@ tv1 = '''#EXTINF:-1 tvg-id="TV1.bg" tvg-name="TV1" tvg-logo="http://logos.epg.cl
 '''+tv1_link+'''
 '''
 bnt2 = '''#EXTINF:-1 tvg-id="БНТ2.bg" tvg-name="БНТ 2" tvg-logo="http://logos.epg.cloudns.org/bnt2.png",БНТ 2
-'''+bnt2_link+'''
+#EXTVLCOPT:http-referrer=https://i.cdn.bg/
+#EXTVLCOPT:http-referer=https://i.cdn.bg/
+#EXTVLCOPT:http-user-agent=Mozilla/5.0
 '''
 bnt3 = '''#EXTINF:-1 tvg-id="БНТ HD.bg" tvg-name="БНТ 3 HD" tvg-logo="http://logos.epg.cloudns.org/bnt3.png",БНТ 3 HD
-'''+bnt3_link+'''
+#EXTVLCOPT:http-referrer=https://i.cdn.bg/
+#EXTVLCOPT:http-referer=https://i.cdn.bg/
+#EXTVLCOPT:http-user-agent=Mozilla/5.0
 '''
 bnt4 = '''#EXTINF:-1 tvg-id="БНТ Свят.bg" tvg-name="БНТ 4" tvg-logo="http://logos.epg.cloudns.org/bnt4.png",БНТ 4
-'''+bnt4_link+'''
-'''
-sto_auto_moto = '''#EXTINF:-1 tvg-id="100% Auto Moto TV" tvg-name="100% Auto Moto TV" tvg-logo="http://epg.cloudns.org/tv/logos/automoto.png",100% Auto Moto TV
-'''+sto_auto_moto_link+'''
+#EXTVLCOPT:http-referrer=https://i.cdn.bg/
+#EXTVLCOPT:http-referer=https://i.cdn.bg/
+#EXTVLCOPT:http-user-agent=Mozilla/5.0
 '''
 traveltv = '''#EXTINF:-1 tvg-id="Travel TV.bg" tvg-name="Travel TV" tvg-logo="http://logos.epg.cloudns.org/travel.png",Travel TV
 '''+traveltv_link+'''
@@ -256,7 +308,19 @@ radiofresh = '''#EXTINF:-1 tvg-id="Radio Fresh" tvg-name="Радио Fresh" tvg-
 
 
 for elem in url_list:
-    if "manifest" in elem:
+    if "bnt1HD" in elem:
+        bnt1 = bnt1+elem+'''
+'''
+    elif "bnt2" in elem:
+        bnt2 = bnt2+elem+'''
+'''
+    elif "bntHD" in elem:
+        bnt3 = bnt3+elem+'''
+'''
+    elif "bntW" in elem:
+        bnt4 = bnt4+elem+'''
+'''
+    elif "/btv/" in elem:
         btv = btv+elem+'''
 '''
     elif "ntv_2" in elem:
@@ -347,7 +411,6 @@ m3u8_content = (
                 bnt2+
                 bnt3+
                 bnt4+
-                sto_auto_moto+
                 traveltv+
                 thisisbg+
                 thevoice+
