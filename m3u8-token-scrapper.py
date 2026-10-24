@@ -61,6 +61,11 @@ options.add_argument("--no-crash-upload")
 options.add_argument('--incognito')
 options.add_argument('--enable-unsafe-swiftshader')
 
+seleniumwire_options = {
+    "request_storage": "memory",
+    "request_storage_max_size": 100,
+}
+
 
 
 sources = [
@@ -93,7 +98,7 @@ sources = [
 url_list = []
 
 for source in sources:
-    driver = webdriver.Chrome(options=options)
+    driver = webdriver.Chrome(options=options, seleniumwire_options=seleniumwire_options)
     del driver.requests
     driver.set_window_size(1280, 720)
     driver.delete_all_cookies()
